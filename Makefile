@@ -4,5 +4,5 @@ makemigrations:
 migrate: makemigrations
 	@python manage.py migrate
 
-runserver:
+run:
 	@python manage.py runserver
