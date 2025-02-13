@@ -1,4 +1,0 @@
-.gitignore
-poetry*
-db.sqlite3
-.venv/
