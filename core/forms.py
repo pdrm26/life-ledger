@@ -6,3 +6,8 @@ class RegisterForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(
         label='Password', max_length=50)
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label="Your name", max_length=50)
+    password = forms.CharField(label="Password", max_length=50)
