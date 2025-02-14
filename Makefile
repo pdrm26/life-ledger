@@ -18,3 +18,6 @@ expense:
 
 income:
 	@curl -X POST -H token=$(TOKEN) --data "amount=$(AMOUNT)&text=$(TEXT)" http://localhost:8000/finance/submit/income
+
+ruff:
+	ruff check --fix
