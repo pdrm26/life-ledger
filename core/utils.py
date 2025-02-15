@@ -1,5 +1,5 @@
-from random import choices
 import string
+from random import choices
 
 ascii_charset = string.ascii_letters + string.digits
 
