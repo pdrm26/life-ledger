@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import submit_expense, submit_income
+from . import views
 
 urlpatterns = [
-    path("submit/expense", submit_expense, name="submit_expense"),
-    path("submit/income", submit_income, name="submit_income"),
+    path("submit/expense", views.submit_expense, name="submit_expense"),
+    path("submit/income", views.submit_income, name="submit_income"),
+    path("q/generalstat", views.generalstat, name="generalstat"),
 ]
