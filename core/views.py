@@ -5,7 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .forms import LoginForm, RegisterForm
 from .models import Token
-from .utils import token_generator
 
 
 def home_view(request):
@@ -21,10 +20,8 @@ def register_account(request):
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
 
-            token = token_generator()
-
             user = User.objects.create(username=username, email=email, password=password)
-            Token.objects.create(token=token, user=user)
+            Token.objects.create(user=user)
 
             return HttpResponseRedirect("/")
 
