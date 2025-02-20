@@ -31,9 +31,11 @@ def submit_income(request):
     if request.method == "POST":
         user_token = request.headers.get("Token")
         user = get_object_or_404(User, token__token=user_token)
-        body = loads(request.body.decode("utf-8"))
-        if "date" not in body:
-            date = datetime.now()
-        Income.objects.create(text=body.get("text"), amount=body.get("amount"), user=user, date=date)
+
+        text = request.POST.get("text")
+        amount = request.POST.get("amount")
+        date = request.POST.get("date", timezone.now())
+
+        Income.objects.create(text=text, amount=amount, user=user, date=date)
         return JsonResponse({"status": "ok"}, status=200)
     return JsonResponse({"status": "nok"}, status=400)
