@@ -19,7 +19,7 @@ class Todo(models.Model):
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="todos")
     title = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
-    descritption = models.TextField(null=True, blank=True, validators=[MinLengthValidator(10)])
+    description = models.TextField(null=True, blank=True, validators=[MinLengthValidator(10)])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     completed_at = models.DateTimeField(null=True, blank=True)
