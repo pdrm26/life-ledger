@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core.apps.CoreConfig",
     "finance.apps.FinanceConfig",
+    "todo.apps.TodoConfig",
     "django_recaptcha",
 ]
 
