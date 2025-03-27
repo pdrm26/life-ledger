@@ -1,12 +1,42 @@
-from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
+from .forms import TodoForm
 from .models import Todo
 
 
 @csrf_exempt
-def list_todos(request):
+def todo_list(request):
     status = request.GET.get("status")
     todos = Todo.objects.filter(status__iexact=status) if status else Todo.objects.all()
+    return render(request, "todo/todo_list.html", context={"todos": todos})
 
-    return JsonResponse(list(todos.values()), safe=False)
+
+def add_todo(request):
+    if request.method == "POST":
+        form = TodoForm(request.POST)
+        if form.is_valid():
+            todo = form.save(commit=False)
+            todo.owner = request.user
+            todo.save()
+            return redirect("todo_list")
+    else:
+        form = TodoForm()
+
+    return render(request, "todo/add_todo.html", context={"form": form})
+
+
+def edit_todo(request, pk):
+    todo = Todo.objects.get(pk=pk)
+    if request.method == "POST":
+        form = TodoForm(request.POST, instance=todo)
+        if form.is_valid():
+            form.save()
+            return redirect("todo_list")
+    return render(request, "todo/edit_todo.html", context={"form": TodoForm(instance=todo)})
+
+
+def delete_todo(request, pk):
+    Todo.objects.get(pk=pk).delete()
+    # TODO: show the allert for success
+    return redirect("todo_list")
