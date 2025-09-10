@@ -9,6 +9,7 @@ A comprehensive life management application built with Django to streamline pers
 ### Core Modules
 
 #### 1. Todo Management
+
 - Three-stage management system
   - `Backlog`
   - `In Progress`
@@ -16,14 +17,8 @@ A comprehensive life management application built with Django to streamline pers
 - 24-hour advance deadline alerts
 - Automatic archiving of overdue tasks
 
-
-#### 2. Diary Module
-- Personal daily journaling
-- Secure private entries
-- Reflection and life tracking
-- Mood and experience logging
-
 #### 3. Finance Tracker
+
 - Income and expense management
 - Financial overview
 - Spending category tracking
@@ -32,19 +27,23 @@ A comprehensive life management application built with Django to streamline pers
 ## 🛠 Technical Stack
 
 ### Backend
+
 - `Django`
 - `PostgreSQL`
 - `Celery` for background tasks
 
 ### Frontend
+
 - `Next.js`
 
 ### Additional Technologies
+
 - `Docker`
 - `Celery`
 - `Redis`
 
 ## 📂 Project Structure
+
 ```
 life_ledger/
 |
@@ -53,10 +52,6 @@ life_ledger/
 │   ├── views.py
 |   └── ...│
 |
-├── diary/             # Diary application module
-│   ├── models.py
-│   ├── views.py
-│   └── ...
 │
 ├── finance/           # Finance tracking module
 │   ├── models.py
@@ -83,6 +78,7 @@ life_ledger/
 ## 💻 Project Setup
 
 ### Prerequisites
+
 - `Python 3.9+`
 - `Django 4.2+`
 - `PostgreSQL`
@@ -91,42 +87,42 @@ life_ledger/
 ### Installation Steps
 
 1. Clone the repository
+
 ```bash
 git clone git@github.com:pdrm26/life-ledger.git
 cd life-ledger
 ```
 
 2. Create virtual environment
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
 3. Install Python dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
 4. Database setup
+
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
 5. Run development server
+
 ```bash
 python manage.py runserver
 ```
 
 ## 🔐 Key Features Details
 
-### Diary Module
-- Create, read, update, delete diary entries
-- Date-based entry tracking
-- Optional mood tagging
-- Search functionality
-
 ### Finance Module
+
 - Track income sources
 - Record expenses
 - Categorize financial transactions
@@ -134,12 +130,14 @@ python manage.py runserver
 - Budget alerts
 
 ### Todo Module
+
 - Create multiple todo lists
 - Set priorities
 - Track completion status
 - Deadline management
 
 ## 🔜 Upcoming Improvements
+
 - [ ] Implement responsive frontend
 - [ ] Add comprehensive test coverage
 - [ ] Create Docker configuration
@@ -148,6 +146,7 @@ python manage.py runserver
 - [ ] Machine learning-powered insights
 
 ## 🤝 Contributing
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
@@ -155,4 +154,5 @@ python manage.py runserver
 5. Open a Pull Request
 
 ## 📄 License
+
 Distributed under the MIT License.
