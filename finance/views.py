@@ -2,7 +2,7 @@ from json import JSONEncoder
 
 from django.contrib.auth.models import User
 from django.db.models import Count, Sum
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -13,7 +13,10 @@ from .models import Expense, Income
 @csrf_exempt
 def submit_expense(request):
     if request.method == "POST":
-        user_token = request.headers.get("Token")
+        try:
+            user_token = request.session["user_token"]
+        except KeyError:
+            return HttpResponse("<p>you are not logged in")
         user = get_object_or_404(User, token__token=user_token)
 
         text = request.POST.get("text")
@@ -29,7 +32,10 @@ def submit_expense(request):
 @csrf_exempt
 def submit_income(request):
     if request.method == "POST":
-        user_token = request.headers.get("Token")
+        try:
+            user_token = request.session["user_token"]
+        except KeyError:
+            return HttpResponse("<p>you are not logged in")
         user = get_object_or_404(User, token__token=user_token)
 
         text = request.POST.get("text")
@@ -44,7 +50,10 @@ def submit_income(request):
 @csrf_exempt
 def generalstat(request):
     if request.method == "GET":
-        user_token = request.headers.get("Token")
+        try:
+            user_token = request.session["user_token"]
+        except KeyError:
+            return HttpResponse("<p>you are not logged in</p>")
         user = get_object_or_404(User, token__token=user_token)
 
         user_total_expense = Expense.objects.filter(user=user).aggregate(
