@@ -1,5 +1,8 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
+
+from core.models import Token
 
 from .forms import TodoForm
 from .models import Todo
@@ -14,10 +17,17 @@ def todo_list(request):
 
 def add_todo(request):
     if request.method == "POST":
+        try:
+            user_token = request.session["user_token"]
+        except KeyError:
+            return HttpResponse("<p>you are not logged in</p>")
+
+        token = Token.objects.get(token=user_token)
+
         form = TodoForm(request.POST)
         if form.is_valid():
             todo = form.save(commit=False)
-            todo.owner = request.user
+            todo.owner = token.user
             todo.save()
             return redirect("todo_list")
     else:
