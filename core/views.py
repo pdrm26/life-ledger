@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -21,7 +21,9 @@ def register_account(request):
             password = form.cleaned_data["password"]
 
             user = User.objects.create(username=username, email=email, password=password)
-            Token.objects.create(user=user)
+            token = Token.objects.create(user=user)
+
+            request.session["user_token"] = token.token
 
             return HttpResponseRedirect("/")
 
@@ -46,6 +48,8 @@ def login_account(request):
             return render(request, "core/account/login.html", {"form": form, "token": token.token})
 
     if request.method == "GET":
+        if request.session["user_token"]:
+            return HttpResponse("<p>you already logged in.")
         form = LoginForm()
 
     return render(request, "core/account/login.html", {"form": form})
