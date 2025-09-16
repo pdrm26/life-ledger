@@ -48,7 +48,7 @@ def login_account(request):
             return render(request, "core/account/login.html", {"form": form, "token": token.token})
 
     if request.method == "GET":
-        if request.session["user_token"]:
+        if request.session.get("user_token"):
             return HttpResponse("<p>you already logged in.")
         form = LoginForm()
 
