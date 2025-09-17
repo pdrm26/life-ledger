@@ -7,10 +7,6 @@ from .forms import LoginForm, RegisterForm
 from .models import Token
 
 
-def home_view(request):
-    return render(request, "home.html")
-
-
 @csrf_exempt
 def register_account(request):
     if request.method == "POST":
