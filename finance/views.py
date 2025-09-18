@@ -11,6 +11,10 @@ from .forms import ExpenseForm
 from .models import Expense, Income
 
 
+def home_page(request):
+    return render(request, "home.html")
+
+
 @csrf_exempt
 def submit_expense(request):
     try:
