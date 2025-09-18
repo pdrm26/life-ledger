@@ -1,10 +1,5 @@
 <form method="post">
     {% csrf_token %}
     {{ form }}
-
-    {% if token %}
-        <p>This is your token: <b>{{token}}</b>, save it and dont show to anyone.</p>
-    {% endif %}
-
     <input type='submit' value='Submit' />
 </form>
