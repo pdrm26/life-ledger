@@ -1,5 +1,6 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -37,15 +38,14 @@ def login_account(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
 
-            # TODO: handle when you cant find the user
-
-            user = User.objects.get(username=username, password=password)
-            token = Token.objects.get(user=user)
-            return render(request, "core/account/login.html", {"form": form, "token": token.token})
-
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                return HttpResponseRedirect("/")
+            return render(request, "core/account/register.html", {"form": form})
     if request.method == "GET":
         if request.session.get("user_token"):
-            return HttpResponse("<p>you already logged in.")
+            return HttpResponseRedirect("/")
         form = LoginForm()
 
     return render(request, "core/account/login.html", {"form": form})
