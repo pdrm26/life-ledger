@@ -2,31 +2,33 @@ from json import JSONEncoder
 
 from django.contrib.auth.models import User
 from django.db.models import Count, Sum
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
+from .forms import ExpenseForm
 from .models import Expense, Income
 
 
 @csrf_exempt
 def submit_expense(request):
+    try:
+        user_token = request.session["user_token"]
+    except KeyError:
+        return HttpResponseRedirect("/account/login?backto=/submit/expense")
+
     if request.method == "POST":
-        try:
-            user_token = request.session["user_token"]
-        except KeyError:
-            return HttpResponse("<p>you are not logged in")
         user = get_object_or_404(User, token__token=user_token)
 
-        text = request.POST.get("text")
-        amount = request.POST.get("amount")
-        date = request.POST.get("date", timezone.now())
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            Expense.objects.create(user=user, **form.cleaned_data)
 
-        Expense.objects.create(text=text, amount=amount, user=user, date=date)
-        return JsonResponse({"status": "ok"}, status=200)
+    if request.method == "GET":
+        form = ExpenseForm()
 
-    return JsonResponse({"error": "only POST request are allowed"}, status=400)
+    return render(request, "expense.html", {"form": form})
 
 
 @csrf_exempt
