@@ -13,11 +13,11 @@ def register_account(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data["username"]
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-
-            user = User.objects.create(username=username, email=email, password=password)
+            user = User.objects.create_user(
+                username=form.cleaned_data["username"],
+                email=form.cleaned_data["email"],
+                password=form.cleaned_data["password"],
+            )
             token = Token.objects.create(user=user)
 
             request.session["user_token"] = token.token
