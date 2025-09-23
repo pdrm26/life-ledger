@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "finance.apps.FinanceConfig",
     "django_recaptcha",
+    "accounts",
 ]
 
 MIDDLEWARE = [
