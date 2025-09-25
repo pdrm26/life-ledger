@@ -8,6 +8,7 @@
     <p><a href="{% url 'password_change' %}">Password Change</a></p>
 {% else %}
     <p>You are not logged in</p>
+    <a href="{% url 'password_reset' %}">Password Reset</a>
     <a href="{% url 'login' %}">Log In</a>
 {% endif %}
 {% endblock %}
