@@ -1,17 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>{% block title %} Finance App {% endblock %}</title>
-  </head>
-
-  <body>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Finance App{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 400px; margin: 0 auto; }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%; padding: 8px; margin: 8px 0;
+        }
+        button {
+            padding: 10px 20px; background: #007cba; color: white;
+            border: none; cursor: pointer; margin-right: 10px;
+        }
+        .error { color: red; margin: 10px 0; }
+        .logout-form { text-align: right; margin-bottom: 20px; }
+        a { color: #007cba; text-decoration: none; margin-right: 15px; }
+        a:hover { text-decoration: underline; }
+        .helptext { font-size: 12px; color: #666; margin: 5px 0; }
+        ul.errorlist { color: red; padding-left: 0; list-style: none; }
+        ul.errorlist li { margin: 5px 0; }
+    </style>
+</head>
+<body>
     {% if user.is_authenticated %}
-      <form method="POST" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-      </form>
+        <div class="logout-form">
+            <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Logout ({{ user.username }})</button>
+            </form>
+        </div>
     {% endif %}
-    <main>{% block content %} {% endblock %}</main>
-  </body>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
 </html>
