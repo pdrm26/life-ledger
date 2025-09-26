@@ -1,8 +1,9 @@
 from json import JSONEncoder
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count, Sum
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -16,15 +17,10 @@ def home_page(request):
 
 
 @csrf_exempt
+@login_required
 def submit_expense(request):
-    try:
-        user_token = request.session["user_token"]
-    except KeyError:
-        return HttpResponseRedirect("/account/login?backto=/submit/expense")
-
     if request.method == "POST":
-        user = get_object_or_404(User, token__token=user_token)
-
+        user = get_object_or_404(User, id=request.user.id)
         form = ExpenseForm(request.POST)
         if form.is_valid():
             Expense.objects.create(user=user, **form.cleaned_data)
@@ -36,14 +32,10 @@ def submit_expense(request):
 
 
 @csrf_exempt
+@login_required
 def submit_income(request):
     if request.method == "POST":
-        try:
-            user_token = request.session["user_token"]
-        except KeyError:
-            return HttpResponse("<p>you are not logged in")
-        user = get_object_or_404(User, token__token=user_token)
-
+        user = get_object_or_404(User, id=request.user.id)
         text = request.POST.get("text")
         amount = request.POST.get("amount")
         date = request.POST.get("date", timezone.now())
@@ -56,11 +48,7 @@ def submit_income(request):
 @csrf_exempt
 def generalstat(request):
     if request.method == "GET":
-        try:
-            user_token = request.session["user_token"]
-        except KeyError:
-            return HttpResponse("<p>you are not logged in</p>")
-        user = get_object_or_404(User, token__token=user_token)
+        user = get_object_or_404(User, id=request.user.id)
 
         user_total_expense = Expense.objects.filter(user=user).aggregate(
             total_expense=Sum("amount", default=0), total_expense_count=Count("amount")
