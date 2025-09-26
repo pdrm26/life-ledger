@@ -1,39 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Finance App{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        success: '#10b981',
+                        danger: '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .container { max-width: 400px; margin: 0 auto; }
-        input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%; padding: 8px; margin: 8px 0;
+        /* Force Django form inputs to have proper styling */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100% !important;
+            padding: 0.5rem 0.75rem !important;
+            border: 2px solid #d1d5db !important;
+            border-radius: 0.375rem !important;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+            font-size: 0.875rem !important;
+            line-height: 1.25rem !important;
+            background-color: white !important;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
         }
-        button {
-            padding: 10px 20px; background: #007cba; color: white;
-            border: none; cursor: pointer; margin-right: 10px;
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none !important;
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
         }
-        .error { color: red; margin: 10px 0; }
-        .logout-form { text-align: right; margin-bottom: 20px; }
-        a { color: #007cba; text-decoration: none; margin-right: 15px; }
-        a:hover { text-decoration: underline; }
-        .helptext { font-size: 12px; color: #666; margin: 5px 0; }
-        ul.errorlist { color: red; padding-left: 0; list-style: none; }
-        ul.errorlist li { margin: 5px 0; }
+
+        /* Error state */
+        input.error, textarea.error, select.error {
+            border-color: #ef4444 !important;
+        }
+
+        input.error:focus, textarea.error:focus, select.error:focus {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+        }
+
+        /* Remove any default Django/browser styling */
+        input, textarea, select {
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+        }
+
+        /* Placeholder styling */
+        input::placeholder, textarea::placeholder {
+            color: #9ca3af !important;
+        }
+
+        /* Disabled state */
+        input:disabled, textarea:disabled, select:disabled {
+            background-color: #f9fafb !important;
+            color: #6b7280 !important;
+            cursor: not-allowed !important;
+        }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen">
     {% if user.is_authenticated %}
-        <div class="logout-form">
-            <form method="POST" action="{% url 'logout' %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit">Logout ({{ user.username }})</button>
-            </form>
-        </div>
+        <nav class="bg-white shadow-sm border-b">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <h1 class="text-xl font-semibold text-gray-900">Finance App</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-600">{{ user.username }}</span>
+                        <form method="POST" action="{% url 'logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
     {% endif %}
 
-    <div class="container">
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {% block content %}{% endblock %}
-    </div>
+    </main>
 </body>
 </html>
