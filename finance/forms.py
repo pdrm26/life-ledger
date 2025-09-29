@@ -5,7 +5,8 @@ from django import forms
 from django.core.validators import MinValueValidator
 
 
-class ExpenseForm(forms.Form):
+class TransactionForm(forms.Form):
+    tx_type = forms.ChoiceField(widget=forms.HiddenInput(), choices=[("income", "Income"), ("expense", "Expense")])
     description = forms.CharField(
         label="Description",
         max_length=255,

@@ -2,43 +2,7 @@
 {% block title %}Home - Finance App{% endblock %}
 {% block content %}
     {% if user.is_authenticated %}
-        <!-- Welcome Section for Authenticated Users -->
-        <div class="bg-white rounded-lg shadow-sm p-8 text-center max-w-2xl mx-auto">
-            <div class="mb-6">
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome back, {{ user.username }}!</h2>
-                <p class="text-gray-600">Ready to manage your finances?</p>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <a  class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
-                    Dashboard
-                </a>
-                <a  class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    Add Transaction
-                </a>
-            </div>
-
-            <!-- Account Options -->
-            <div class="border-t pt-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Account Settings</h3>
-                <div class="space-y-2">
-                    <a href="{% url 'password_change' %}" class="inline-flex items-center text-blue-600 hover:text-blue-500 font-medium">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m0 0a2 2 0 01-2 2m2-2h-3m-9 2.25V9a2 2 0 012-2h3m-9 2.25a23.06 23.06 0 01.68-.68m8.64 8.64a23.06 23.06 0 01.68-.68"></path>
-                        </svg>
-                        Change Password
-                    </a>
-                </div>
-            </div>
-        </div>
-
+        {% include 'txs.html' %}
     {% else %}
         <!-- Landing Page for Non-Authenticated Users -->
         <div class="text-center">

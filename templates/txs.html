@@ -1,5 +1,3 @@
-{% extends "base.html" %}
-{% block title %}Finance Dashboard{% endblock %}
 {% block content %}
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -115,7 +113,8 @@
                         </svg>
                     </button>
                 </div>
-                <form method="post" class="space-y-4">
+                <form method="post" action="{% url 'home' %}" class="space-y-4">
+                    <input type="hidden" name="tx_type" value="income"/>
                     {% csrf_token %}
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
@@ -154,7 +153,8 @@
                         </svg>
                     </button>
                 </div>
-                <form method="post"  class="space-y-4">
+                <form method="post" action="{% url 'home' %}" class="space-y-4">
+                    <input type="hidden" name="tx_type" value="expense"/>
                     {% csrf_token %}
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
@@ -192,6 +192,10 @@
             document.getElementById(modalId).classList.remove('flex');
         }
 
+        function setTransactionType(form, type) {
+            form.querySelector('input[name="transaction_type"]').value = type;
+        }
+
         // Close modal when clicking outside
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('bg-black')) {
@@ -204,7 +208,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
             const dateInputs = document.querySelectorAll('input[type="date"]');
-            dateInputs.forEach(input => input.value = today);
+            dateInputs.forEach(input => {
+                if (!input.value) {
+                    input.value = today;
+                }
+            });
         });
     </script>
 {% endblock %}
