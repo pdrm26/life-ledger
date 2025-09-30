@@ -1,24 +1,23 @@
-from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import TransactionForm
 from .models import Transaction
 
 
+# TODO: with each refresh the page req the POST request not GET
 def home_page(request):
     if request.method == "POST":
-        user = get_object_or_404(User, id=request.user.id)
         form = TransactionForm(request.POST)
         if form.is_valid():
-            Transaction.objects.create(user=user, **form.cleaned_data)
+            Transaction.objects.create(user=request.user, **form.cleaned_data)
     else:
         form = TransactionForm()
 
     context = {
         "form": form,
-        "transactions": Transaction.objects.filter(user=user),
+        "transactions": Transaction.objects.filter(user=request.user),
         "total_income": 10000,
         "total_expenses": 1,
         "net_balance": 2.2,
