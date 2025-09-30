@@ -1,17 +1,17 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import TransactionForm
 from .models import Transaction
 
 
-# TODO: with each refresh the page req the POST request not GET
 def home_page(request):
     if request.method == "POST":
         form = TransactionForm(request.POST)
         if form.is_valid():
             Transaction.objects.create(user=request.user, **form.cleaned_data)
+            return redirect("home")
     else:
         form = TransactionForm()
 
