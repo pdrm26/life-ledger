@@ -1,3 +1,5 @@
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
@@ -15,12 +17,19 @@ def home_page(request):
     else:
         form = TransactionForm()
 
+    expense = Transaction.objects.filter(tx_type=Transaction.TransactionTypes.EXPENSE).aggregate(
+        total_expense=Coalesce(Sum("amount"), 0)
+    )["total_expense"]
+    income = Transaction.objects.filter(tx_type=Transaction.TransactionTypes.INCOME).aggregate(
+        total_income=Coalesce(Sum("amount"), 0)
+    )["total_income"]
+
     context = {
         "form": form,
         "transactions": Transaction.objects.filter(user=request.user),
-        "total_income": 10000,
-        "total_expenses": 1,
-        "net_balance": 2.2,
+        "total_income": income,
+        "total_expense": expense,
+        "net_balance": expense - income,
     }
     return render(request, "home.html", context)
 
