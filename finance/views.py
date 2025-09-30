@@ -17,6 +17,7 @@ def home_page(request):
     else:
         form = TransactionForm()
 
+    # TODO: anonymous user crash i think we should break the finance_dashboard with home
     expense = Transaction.objects.filter(tx_type=Transaction.TransactionTypes.EXPENSE).aggregate(
         total_expense=Coalesce(Sum("amount"), 0)
     )["total_expense"]
