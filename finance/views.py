@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse
@@ -8,7 +9,12 @@ from .forms import TransactionForm
 from .models import Transaction
 
 
-def home_page(request):
+def home(request):
+    return render(request, "home.html")
+
+
+@login_required
+def dashboard(request):
     if request.method == "POST":
         form = TransactionForm(request.POST)
         if form.is_valid():
@@ -17,7 +23,6 @@ def home_page(request):
     else:
         form = TransactionForm()
 
-    # TODO: anonymous user crash i think we should break the finance_dashboard with home
     expense = Transaction.objects.filter(tx_type=Transaction.TransactionTypes.EXPENSE).aggregate(
         total_expense=Coalesce(Sum("amount"), 0)
     )["total_expense"]
@@ -32,7 +37,7 @@ def home_page(request):
         "total_expense": expense,
         "net_balance": expense - income,
     }
-    return render(request, "home.html", context)
+    return render(request, "dashboard.html", context)
 
 
 @csrf_exempt
