@@ -23,9 +23,9 @@ class TransactionForm(forms.Form):
         help_text="Enter amount in dollars",
         widget=forms.NumberInput(attrs={"class": "form-control", "step": "0.01", "min": "1.00", "placeholder": "0.00"}),
     )
-    date = forms.DateField(
-        label="Date",
-        initial=datetime.date.today,
-        help_text="When did this expense occur?",
-        widget=forms.DateInput(attrs={"calss": "form-control", "type": "date"}),
+    date = forms.DateTimeField(
+        label="Date and Time",
+        initial=datetime.datetime.now,
+        help_text="When did this tx occur?",
+        widget=forms.DateTimeInput(attrs={"calss": "form-control", "type": "datetime-local"}),
     )
