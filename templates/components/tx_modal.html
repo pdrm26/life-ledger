@@ -9,7 +9,7 @@
                     </svg>
                 </button>
             </div>
-            <form method="post" action="{% url 'home' %}" class="space-y-4">
+            <form method="post" action="{% url 'dashboard' %}" class="space-y-4">
                 <input type="hidden" name="tx_type" value="{{ tx_type }}"/>
                 {% csrf_token %}
                 <div>

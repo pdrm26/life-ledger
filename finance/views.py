@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import TransactionForm
@@ -19,7 +19,6 @@ def dashboard(request):
         form = TransactionForm(request.POST)
         if form.is_valid():
             Transaction.objects.create(user=request.user, **form.cleaned_data)
-            return redirect("home")
     else:
         form = TransactionForm()
 
