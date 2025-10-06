@@ -31,7 +31,7 @@ def dashboard(request):
 
     context = {
         "form": form,
-        "transactions": Transaction.objects.filter(user=request.user),
+        "transactions": Transaction.objects.filter(user=request.user).order_by("-date"),
         "total_income": income,
         "total_expense": expense,
         "net_balance": expense - income,
