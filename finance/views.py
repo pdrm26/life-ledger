@@ -23,16 +23,18 @@ def dashboard(request):
     else:
         form = TransactionForm()
 
-    expense = Transaction.objects.filter(tx_type=Transaction.TransactionTypes.EXPENSE).aggregate(
+    txs = Transaction.objects.filter(user=request.user)
+
+    expense = txs.filter(tx_type=Transaction.TransactionTypes.EXPENSE).aggregate(
         total_expense=Coalesce(Sum("amount"), 0)
     )["total_expense"]
-    income = Transaction.objects.filter(tx_type=Transaction.TransactionTypes.INCOME).aggregate(
-        total_income=Coalesce(Sum("amount"), 0)
-    )["total_income"]
+    income = txs.filter(tx_type=Transaction.TransactionTypes.INCOME).aggregate(total_income=Coalesce(Sum("amount"), 0))[
+        "total_income"
+    ]
 
     context = {
         "form": form,
-        "transactions": Transaction.objects.filter(user=request.user).order_by("-date"),
+        "transactions": txs.order_by("-date"),
         "total_income": income,
         "total_expense": expense,
         "net_balance": income - expense,
