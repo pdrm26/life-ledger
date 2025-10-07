@@ -35,7 +35,7 @@ def dashboard(request):
         "transactions": Transaction.objects.filter(user=request.user).order_by("-date"),
         "total_income": income,
         "total_expense": expense,
-        "net_balance": expense - income,
+        "net_balance": income - expense,
     }
     return render(request, "dashboard.html", context)
 
